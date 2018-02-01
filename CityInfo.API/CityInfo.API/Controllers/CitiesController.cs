@@ -15,18 +15,20 @@ namespace CityInfo.API.Controllers
 		//}
 		//[HttpGet("api/cities")]		// <-- if not using Route attribute at controller level
 		[HttpGet()]
-		public JsonResult GetCities()
+		public IActionResult GetCities()
 		{
-			return new JsonResult(CitiesDataStore.Current.Cities);
-			//return new JsonResult(new List<object>() {
-			//	new { id = 1, Name = "Boise" }
-			//	, new { id = 2, Name = "Nampa" }
-			//});
+			return Ok(CitiesDataStore.Current.Cities);
 		}
 
 		[HttpGet("{id}")]
-		public JsonResult GetCity(int id) {
-			return new JsonResult(CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == id));
+		public IActionResult GetCity(int id) {
+			var cityToReturn = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == id);
+
+			if (cityToReturn == null)
+			{
+				return NotFound();
+			}
+			return Ok(cityToReturn);
 		}
 	}
 }
