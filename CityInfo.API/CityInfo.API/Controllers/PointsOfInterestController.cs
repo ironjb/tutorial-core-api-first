@@ -12,7 +12,7 @@ namespace CityInfo.API.Controllers
 	[Route("api/cities")]
 	public class PointsOfInterestController : Controller
 	{
-		private ILogger<PointsOfInterestController> _logger;
+		private readonly ILogger<PointsOfInterestController> _logger;
 
 		public PointsOfInterestController(ILogger<PointsOfInterestController> logger) {
 			_logger = logger;
@@ -21,7 +21,9 @@ namespace CityInfo.API.Controllers
 		[HttpGet("{cityId}/pointsofinterest")]
 		public IActionResult GetPointsOfInterest(int cityId) {
 			try {
-				throw new Exception("Exception example");
+				// throw new Exception("Exception example");
+				_logger.LogError($"Hello, you are looking for Points of Intereset for cityId {cityId}");
+
 				var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
 				if (city == null)
 				{
