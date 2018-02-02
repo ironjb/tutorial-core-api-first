@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CityInfo.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -32,6 +33,8 @@ namespace CityInfo.API
 					castedResolver.NamingStrategy = null;
 				}
 			}); */
+
+			services.AddTransient<LocalMailService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
