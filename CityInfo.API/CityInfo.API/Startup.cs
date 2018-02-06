@@ -42,6 +42,10 @@ namespace CityInfo.API
 				}
 			}); */
 
+			// 3 Lifetimes we can register the service with:
+			// Transient - services that must be created each time they are requested
+			// Scoped - services that are created once per request
+			// Singleton - services created first time requested
 #if DEBUG
 			services.AddTransient<IMailService, LocalMailService>();
 #else
@@ -49,6 +53,8 @@ namespace CityInfo.API
 #endif
 			var connectionString = Startup.Configuration["connectionStrings:cityInfoDBConnectionString"];
 			services.AddDbContext<CityInfoContext>(o => o.UseSqlServer(connectionString));
+
+			services.AddScoped<ICityInfoRepository, CityInfoRepository>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
