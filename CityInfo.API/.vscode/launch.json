@@ -32,6 +32,12 @@
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
                 // "ASPNETCORE_ENVIRONMENT": "Production",
+                // Production string should NEVER be committed to source control.
+                // In Visual Studio, the environment variables are saved to Properties/launchSettings.json.
+                // In VS Code, the environment variables are saved to this file (launch.json).
+                // Instead look into Windows "Environment Variables" OR App Secrets:
+                // https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?tabs=visual-studio-code
+                // "connectionStrings:cityInfoDBConnectionString": "Server=myproductionserver;Database=CityInfoDB;UserId=CertainlyNotSA;Password=CertainlyNotSA;",
                 "ASPNETCORE_URLS": "http://localhost:5050"
             },
             "sourceFileMap": {
