@@ -192,20 +192,29 @@ namespace CityInfo.API.Controllers
 				return BadRequest();
 			}
 
-			var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
-			if (city == null) {
+			// var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
+			// if (city == null) {
+			// 	return NotFound();
+			// }
+			if (!_cityInfoRepository.CityExists(cityId)) {
 				return NotFound();
 			}
 
-			var pointOfInterestFromStore = city.PointsOfInterest.FirstOrDefault(p => p.Id == id);
-			if (pointOfInterestFromStore == null) {
+			// var pointOfInterestFromStore = city.PointsOfInterest.FirstOrDefault(p => p.Id == id);
+			// if (pointOfInterestFromStore == null) {
+			// 	return NotFound();
+			// }
+			var pointOfInterestEntity = _cityInfoRepository.GetPointOfInterestForCity(cityId, id);
+			if (pointOfInterestEntity == null) {
 				return NotFound();
 			}
 
-			var pointOfInterestToPatch = new PointOfInterestForUpdateDto() {
-				Name = pointOfInterestFromStore.Name
-				, Description = pointOfInterestFromStore.Description
-			};
+			var pointOfInterestToPatch = Mapper.Map<PointOfInterestForUpdateDto>(pointOfInterestEntity);
+
+			// var pointOfInterestToPatch = new PointOfInterestForUpdateDto() {
+			// 	Name = pointOfInterestFromStore.Name
+			// 	, Description = pointOfInterestFromStore.Description
+			// };
 
 			patchDoc.ApplyTo(pointOfInterestToPatch, ModelState);
 
@@ -225,8 +234,13 @@ namespace CityInfo.API.Controllers
 				return BadRequest(ModelState);
 			}
 
-			pointOfInterestFromStore.Name = pointOfInterestToPatch.Name;
-			pointOfInterestFromStore.Description = pointOfInterestToPatch.Description;
+			// pointOfInterestFromStore.Name = pointOfInterestToPatch.Name;
+			// pointOfInterestFromStore.Description = pointOfInterestToPatch.Description;
+			Mapper.Map(pointOfInterestToPatch, pointOfInterestEntity);
+
+			if (!_cityInfoRepository.Save()) {
+				return StatusCode(500, "A problem happened while handling your request.");
+			}
 
 			return NoContent();
 		}
