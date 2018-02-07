@@ -11,9 +11,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-// using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
-// using NLog.Extensions.Logging;
 
 namespace CityInfo.API
 {
@@ -32,15 +30,6 @@ namespace CityInfo.API
 			.AddMvcOptions(o => o.OutputFormatters.Add(
 				new XmlDataContractSerializerOutputFormatter()
 			));
-			/* .AddJsonOptions(o => {
-				if (o.SerializerSettings.ContractResolver != null)
-				{
-					// Stops the Json Serializer from changing the case on the properties.
-					// Serializer will now just take the property names as they are defined in the class.
-					var castedResolver = o.SerializerSettings.ContractResolver as DefaultContractResolver;
-					castedResolver.NamingStrategy = null;
-				}
-			}); */
 
 			// 3 Lifetimes we can register the service with:
 			// Transient - services that must be created each time they are requested
@@ -58,11 +47,8 @@ namespace CityInfo.API
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env,/* ILoggerFactory loggerFactory, */ CityInfoContext cityInfoContext)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, CityInfoContext cityInfoContext)
 		{
-			// loggerFactory.AddProvider(new NLog.Extensions.Logging.NLogLoggerProvider());
-			// loggerFactory.AddNLog();
-
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
@@ -86,15 +72,6 @@ namespace CityInfo.API
 			});
 
 			app.UseMvc();
-
-			//app.Run((context) => {
-			//	throw new Exception("Example exception");
-			//});
-
-			//app.Run(async (context) =>
-			//{
-			//    await context.Response.WriteAsync("Hello World!");
-			//});
 		}
 	}
 }

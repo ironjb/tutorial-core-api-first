@@ -18,43 +18,18 @@ namespace CityInfo.API.Controllers
 			_cityInfoRepository = cityInfoRepository;
 		}
 
-		//public IActionResult Index()
-		//{
-		//	return View();
-		//}
-
-		//[HttpGet("api/cities")]		// <-- if not using Route attribute at controller level
 		[HttpGet()]
 		public IActionResult GetCities()
 		{
-			// return Ok(CitiesDataStore.Current.Cities);
 			var cityEntities = _cityInfoRepository.GetCities();
 
 			var results = Mapper.Map<IEnumerable<CityWithoutPointsOfInterestDto>>(cityEntities);
-
-			// var results = new List<CityWithoutPointsOfInterestDto>();
-
-			// foreach (var cityEntity in cityEntities)
-			// {
-			// 	results.Add(new CityWithoutPointsOfInterestDto {
-			// 		Id = cityEntity.Id
-			// 		, Name = cityEntity.Name
-			// 		, Description = cityEntity.Description
-			// 	});
-			// }
 
 			return Ok(results);
 		}
 
 		[HttpGet("{id}")]
 		public IActionResult GetCity(int id, bool includePointsOfInterest = false) {
-			// var cityToReturn = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == id);
-
-			// if (cityToReturn == null)
-			// {
-			// 	return NotFound();
-			// }
-			// return Ok(cityToReturn);
 			var city = _cityInfoRepository.GetCity(id, includePointsOfInterest);
 
 			if (city == null) {
@@ -63,29 +38,11 @@ namespace CityInfo.API.Controllers
 
 			if (includePointsOfInterest) {
 				var cityResult = Mapper.Map<CityDto>(city);
-				// var cityResult = new CityDto() {
-				// 	Id = city.Id
-				// 	, Name = city.Name
-				// 	, Description = city.Description
-				// };
-
-				// foreach (var poi in city.PointsOfInterest) {
-				// 	cityResult.PointsOfInterest.Add(new PointOfInterestDto() {
-				// 		Id = poi.Id
-				// 		, Name = poi.Name
-				// 		, Description = poi.Description
-				// 	});
-				// }
 
 				return Ok(cityResult);
 			}
 
 			var cityWithoutPointsOfInterestResult = Mapper.Map<CityWithoutPointsOfInterestDto>(city);
-			// var cityWithoutPointsOfInterestResult = new CityWithoutPointsOfInterestDto() {
-			// 	Id = city.Id
-			// 	, Name = city.Name
-			// 	, Description = city.Description
-			// };
 
 			return Ok(cityWithoutPointsOfInterestResult);
 		}
